@@ -24,24 +24,7 @@ Canteen Pulse is a revolutionary campus dining platform that transforms how stud
 
 ## 🚀 Live Demo
 
-**[Try Canteen Pulse Now!](#)** *(Add your Vercel URL here after deployment)*
-
-## 📸 Screenshots
-
-### Hero Section
-Beautiful gradient hero with real-time authentication
-
-### Menu Display
-Browse dishes across multiple canteen locations with live ratings
-
-### Battle Cards
-See which dishes are winning (and losing) the popularity contest
-
-### Leaderboard
-Top 25 most active reviewers competing for glory
-
-### Staff Dashboard
-AI-powered insights for canteen management
+**[Try Canteen Pulse Now!](#)** *(https://canteen-pulse.vercel.app)*
 
 ## 🛠️ Tech Stack
 
