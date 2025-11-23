@@ -61,35 +61,65 @@ export async function getStaffStatistics() {
         .gte('created_at', todayStart)
 
     // Get all ratings for today to calculate percentages
-    const { data: allRatings } = await supabase
+    const { data: todayRatings } = await supabase
         .from('ratings')
-        .select('rating, dish_id')
+        .select('rating')
         .gte('created_at', todayStart)
 
-    const positiveCount = allRatings?.filter(r => r.rating >= 4).length || 0
-    const positivePercentage = allRatings?.length
-        ? Math.round((positiveCount / allRatings.length) * 100)
+    const positiveCount = todayRatings?.filter(r => r.rating >= 4).length || 0
+    const positivePercentage = todayRatings?.length
+        ? Math.round((positiveCount / todayRatings.length) * 100)
         : 0
 
-    // Get negative alerts (1-2 star ratings)
+    // Get negative alerts (1-2 star ratings today)
     const { count: negativeAlerts } = await supabase
         .from('ratings')
         .select('*', { count: 'exact', head: true })
         .lte('rating', 2)
         .gte('created_at', todayStart)
 
-    // Get top rated dish today
-    const { data: topDishData } = await supabase
-        .from('ratings')
-        .select('dish_id, dishes(name)')
-        .gte('created_at', todayStart)
-        .order('rating', { ascending: false })
-        .limit(1)
-        .maybeSingle()
+    // Get Top Dish (ALL TIME - same logic as Crowd Favourite)
+    // This ensures consistency between Staff Dashboard and Home Page
+    const { data: dishes } = await supabase
+        .from('dishes')
+        .select(`
+            id,
+            name,
+            ratings (
+                rating
+            )
+        `)
 
-    const topDishName = topDishData?.dishes && typeof topDishData.dishes === 'object' && 'name' in topDishData.dishes
-        ? (topDishData.dishes as any).name
-        : 'N/A'
+    let topDishName = 'No ratings yet'
+
+    if (dishes && dishes.length > 0) {
+        const dishesWithStats = dishes.map(dish => {
+            const ratings = (dish.ratings as any[]) || []
+            const totalReviews = ratings.length
+            const avgRating = totalReviews > 0
+                ? ratings.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+                : 0
+
+            return {
+                name: dish.name,
+                avgRating,
+                totalReviews
+            }
+        })
+
+        // Filter dishes with at least 3 reviews for reliability
+        const dishesWithEnoughReviews = dishesWithStats.filter(d => d.totalReviews >= 3)
+
+        if (dishesWithEnoughReviews.length > 0) {
+            // Sort by average rating (descending)
+            const sorted = dishesWithEnoughReviews.sort((a, b) => b.avgRating - a.avgRating)
+            topDishName = sorted[0].name
+        } else if (dishesWithStats.length > 0) {
+            // Fallback: use all dishes if not enough have 3+ reviews
+            const sorted = dishesWithStats.sort((a, b) => b.avgRating - a.avgRating)
+            topDishName = sorted[0].name
+        }
+    }
 
     return {
         totalRatings: totalRatings || 0,

@@ -90,10 +90,10 @@ export default function DishDetailPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-slate-50 pb-20">
-                <div className="h-64 bg-slate-200 animate-pulse" />
+            <div className="min-h-screen bg-background pb-20">
+                <div className="h-64 bg-muted animate-pulse" />
                 <div className="container mx-auto px-4 -mt-8">
-                    <div className="bg-white rounded-3xl p-6 shadow-lg space-y-4">
+                    <div className="bg-card rounded-3xl p-6 shadow-lg space-y-4">
                         <Skeleton className="h-8 w-3/4" />
                         <Skeleton className="h-4 w-1/2" />
                         <Skeleton className="h-24 w-full" />
@@ -105,9 +105,9 @@ export default function DishDetailPage() {
 
     if (!dish) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-50">
+            <div className="min-h-screen flex items-center justify-center bg-background">
                 <div className="text-center">
-                    <h2 className="text-2xl font-bold text-slate-900">Dish not found</h2>
+                    <h2 className="text-2xl font-bold">Dish not found</h2>
                     <Button onClick={() => router.back()} className="mt-4">Go Back</Button>
                 </div>
             </div>
@@ -115,7 +115,7 @@ export default function DishDetailPage() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 pb-24">
+        <div className="min-h-screen bg-background pb-24">
             {/* Hero Image */}
             <div className="relative h-72 w-full">
                 <Image
@@ -137,12 +137,12 @@ export default function DishDetailPage() {
 
             {/* Dish Info Card */}
             <div className="container mx-auto px-4 -mt-12 relative z-10">
-                <Card className="border-0 shadow-xl rounded-3xl overflow-hidden">
+                <Card className="border shadow-premium rounded-3xl overflow-hidden">
                     <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-2">
                             <div>
-                                <h1 className="text-2xl font-black text-slate-900">{dish.name}</h1>
-                                <p className="text-slate-500 text-sm font-medium">{dish.category}</p>
+                                <h1 className="text-2xl font-black">{dish.name}</h1>
+                                <p className="text-muted-foreground text-sm font-medium">{dish.category}</p>
                             </div>
                             <div className="text-right">
                                 <span className="text-2xl font-black text-orange-600">₹{dish.price}</span>
@@ -153,18 +153,18 @@ export default function DishDetailPage() {
                             <Badge variant={dish.is_veg ? "success" : "destructive"} className="rounded-full px-3">
                                 {dish.is_veg ? '🥬 Veg' : '🍖 Non-Veg'}
                             </Badge>
-                            <div className="flex items-center gap-1 text-yellow-500 font-bold">
+                            <div className="flex items-center gap-1 text-yellow-500 dark:text-yellow-400 font-bold">
                                 <Star className="w-4 h-4 fill-current" />
                                 <span>{ratingStats.average}</span>
-                                <span className="text-slate-400 font-normal text-sm">({ratingStats.total})</span>
+                                <span className="text-muted-foreground font-normal text-sm">({ratingStats.total})</span>
                             </div>
-                            <div className="flex items-center gap-1 text-slate-500 text-sm">
+                            <div className="flex items-center gap-1 text-muted-foreground text-sm">
                                 <Flame className="w-4 h-4 text-orange-500" />
                                 <span>{dish.calories || '250'} cal</span>
                             </div>
                         </div>
 
-                        <p className="text-slate-600 leading-relaxed">
+                        <p className="text-muted-foreground leading-relaxed">
                             {dish.description || 'A delicious and freshly prepared dish made with high-quality ingredients. Perfect for a quick meal or a hearty snack.'}
                         </p>
 
@@ -179,7 +179,7 @@ export default function DishDetailPage() {
                 </Card>
 
                 {/* Rating Stats */}
-                <Card className="mt-6 border-0 shadow-lg rounded-3xl">
+                <Card className="mt-6 border shadow-premium rounded-3xl">
                     <CardHeader>
                         <CardTitle className="text-lg font-bold">Rating Breakdown</CardTitle>
                     </CardHeader>
@@ -187,7 +187,7 @@ export default function DishDetailPage() {
                         <div className="space-y-3">
                             {[5, 4, 3, 2, 1].map((stars) => (
                                 <div key={stars} className="flex items-center gap-3">
-                                    <div className="flex items-center gap-1 w-12 text-sm font-medium text-slate-600">
+                                    <div className="flex items-center gap-1 w-12 text-sm font-medium text-muted-foreground">
                                         <span>{stars}</span>
                                         <Star className="w-3 h-3 fill-slate-400 text-slate-400" />
                                     </div>
@@ -195,7 +195,7 @@ export default function DishDetailPage() {
                                         value={ratingStats.total > 0 ? (ratingStats.distribution[stars] / ratingStats.total) * 100 : 0}
                                         className="h-2"
                                     />
-                                    <span className="text-xs text-slate-400 w-8 text-right">
+                                    <span className="text-xs text-muted-foreground w-8 text-right">
                                         {ratingStats.distribution[stars]}
                                     </span>
                                 </div>
@@ -209,15 +209,15 @@ export default function DishDetailPage() {
                     <h3 className="text-lg font-bold mb-4 px-2">Recent Reviews</h3>
 
                     {ratings.length === 0 ? (
-                        <div className="text-center py-10 bg-white rounded-3xl shadow-sm">
-                            <MessageSquare className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                            <p className="text-slate-500 font-medium">No reviews yet</p>
-                            <p className="text-slate-400 text-sm">Be the first to rate this dish!</p>
+                        <div className="text-center py-10 bg-card rounded-3xl shadow-sm border">
+                            <MessageSquare className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
+                            <p className="text-muted-foreground font-medium">No reviews yet</p>
+                            <p className="text-muted-foreground/70 text-sm">Be the first to rate this dish!</p>
                         </div>
                     ) : (
                         <div className="space-y-4">
                             {ratings.map((review) => (
-                                <Card key={review.id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
+                                <Card key={review.id} className="border shadow-premium hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                                     <CardContent className="p-4">
                                         <div className="flex justify-between items-start mb-2">
                                             <div className="flex items-center gap-3">
@@ -227,22 +227,22 @@ export default function DishDetailPage() {
                                                     </AvatarFallback>
                                                 </Avatar>
                                                 <div>
-                                                    <p className="text-sm font-bold text-slate-900">
+                                                    <p className="text-sm font-bold">
                                                         {review.profiles?.full_name || 'Anonymous User'}
                                                     </p>
-                                                    <p className="text-xs text-slate-400">
+                                                    <p className="text-xs text-muted-foreground">
                                                         {formatDistanceToNow(new Date(review.created_at), { addSuffix: true })}
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center bg-green-50 px-2 py-1 rounded-lg">
-                                                <span className="text-sm font-bold text-green-700">{review.rating}</span>
-                                                <Star className="w-3 h-3 text-green-700 fill-current ml-1" />
+                                            <div className="flex items-center bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded-lg">
+                                                <span className="text-sm font-bold text-green-700 dark:text-green-400">{review.rating}</span>
+                                                <Star className="w-3 h-3 text-green-700 dark:text-green-400 fill-current ml-1" />
                                             </div>
                                         </div>
 
                                         {review.comment && (
-                                            <p className="text-slate-600 text-sm mt-2 leading-relaxed">
+                                            <p className="text-muted-foreground text-sm mt-2 leading-relaxed">
                                                 {review.comment}
                                             </p>
                                         )}
@@ -251,7 +251,7 @@ export default function DishDetailPage() {
                                         {review.tags && review.tags.length > 0 && (
                                             <div className="flex flex-wrap gap-2 mt-3">
                                                 {review.tags.map((tag: string) => (
-                                                    <span key={tag} className="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-md">
+                                                    <span key={tag} className="text-xs px-2 py-1 bg-muted text-muted-foreground rounded-md">
                                                         {tag}
                                                     </span>
                                                 ))}

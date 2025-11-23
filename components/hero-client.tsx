@@ -7,6 +7,7 @@ import { ArrowRight, Sparkles, LogIn, User as UserIcon } from 'lucide-react'
 import Link from 'next/link'
 import { LoginDialog } from '@/components/login-dialog'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { UserMenu } from '@/components/user-menu'
 
 interface HeroClientProps {
     user: {
@@ -54,20 +55,10 @@ export function HeroClient({ user }: HeroClientProps) {
                 {/* Content */}
                 <div className="relative z-10 container mx-auto px-4">
                     <div className="max-w-6xl mx-auto text-center">
-                        {/* Top bar with theme toggle and login */}
                         <div className="absolute top-4 right-4 flex items-center gap-3">
                             <ThemeToggle />
                             {user ? (
-                                <Link href="/profile">
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className="gap-2 text-white hover:bg-white/10 hover:text-white"
-                                    >
-                                        <UserIcon className="w-4 h-4" />
-                                        {user.profile?.full_name || user.email}
-                                    </Button>
-                                </Link>
+                                <UserMenu user={user} />
                             ) : (
                                 <Button
                                     variant="ghost"

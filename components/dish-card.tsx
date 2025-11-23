@@ -56,8 +56,8 @@ export function DishCard({ item }: DishCardProps) {
             whileHover={{ y: -5 }}
             transition={{ type: 'spring', stiffness: 300 }}
         >
-            <Card className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 bg-white/70 backdrop-blur-sm h-full flex flex-col">
-                <div className="relative h-48 w-full overflow-hidden rounded-t-xl">
+            <Card className="overflow-hidden border shadow-premium hover:shadow-xl transition-all duration-300 bg-card h-full flex flex-col rounded-xl p-0">
+                <div className="relative h-48 w-full overflow-hidden">
                     <Image
                         src={dish.image_url || '/placeholder-food.jpg'}
                         alt={dish.name}
@@ -71,7 +71,7 @@ export function DishCard({ item }: DishCardProps) {
                     </Badge>
 
                     <div className="absolute bottom-3 left-3 text-white">
-                        <h3 className="font-bold text-lg leading-tight shadow-black/50 drop-shadow-md">{dish.name}</h3>
+                        <h3 className="font-bold text-lg leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">{dish.name}</h3>
                     </div>
                 </div>
 
@@ -79,9 +79,9 @@ export function DishCard({ item }: DishCardProps) {
                     <div className="flex justify-between items-center mb-2">
                         <span className="font-bold text-xl text-primary">₹{dish.price}</span>
                         {rating > 0 && (
-                            <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-md border border-yellow-100">
+                            <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/30 px-2 py-1 rounded-md border border-yellow-200 dark:border-yellow-700">
                                 <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                                <span className="text-sm font-bold text-yellow-700">{rating}</span>
+                                <span className="text-sm font-bold text-yellow-700 dark:text-yellow-400">{rating}</span>
                             </div>
                         )}
                     </div>

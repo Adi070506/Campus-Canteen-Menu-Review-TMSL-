@@ -80,8 +80,8 @@ export function BattleCards({ topDish, bottomDish }: BattleCardsProps) {
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                                     <div className="absolute bottom-3 left-3 right-3">
-                                        <h4 className="text-2xl font-bold text-white mb-1">{topDish.name}</h4>
-                                        <p className="text-sm text-white/80">{topDish.category}</p>
+                                        <h4 className="text-2xl font-bold text-white mb-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">{topDish.name}</h4>
+                                        <p className="text-sm text-white/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">{topDish.category}</p>
                                     </div>
                                 </div>
 
@@ -92,8 +92,8 @@ export function BattleCards({ topDish, bottomDish }: BattleCardsProps) {
                                             <Star
                                                 key={i}
                                                 className={`h-4 w-4 transition-all duration-300 ${i < Math.floor(topDish.avgRating)
-                                                        ? 'fill-yellow-500 text-yellow-500'
-                                                        : 'text-gray-300'
+                                                    ? 'fill-yellow-500 text-yellow-500'
+                                                    : 'text-gray-300'
                                                     }`}
                                             />
                                         ))}
@@ -153,8 +153,8 @@ export function BattleCards({ topDish, bottomDish }: BattleCardsProps) {
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                                     <div className="absolute bottom-3 left-3 right-3">
-                                        <h4 className="text-2xl font-bold text-white mb-1">{bottomDish.name}</h4>
-                                        <p className="text-sm text-white/80">{bottomDish.category}</p>
+                                        <h4 className="text-2xl font-bold text-white mb-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">{bottomDish.name}</h4>
+                                        <p className="text-sm text-white/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">{bottomDish.category}</p>
                                     </div>
                                 </div>
 
@@ -165,8 +165,8 @@ export function BattleCards({ topDish, bottomDish }: BattleCardsProps) {
                                             <Star
                                                 key={i}
                                                 className={`h-4 w-4 transition-all duration-300 ${i < Math.floor(bottomDish.avgRating)
-                                                        ? 'fill-yellow-500 text-yellow-500'
-                                                        : 'text-gray-300'
+                                                    ? 'fill-yellow-500 text-yellow-500'
+                                                    : 'text-gray-300'
                                                     }`}
                                             />
                                         ))}

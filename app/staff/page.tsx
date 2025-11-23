@@ -6,6 +6,7 @@ import { AvailabilityManager } from '@/components/availability-manager'
 import { AlertTriangle, ThumbsUp, ThumbsDown, TrendingUp, Users, Star, Clock, ChefHat } from 'lucide-react'
 import { createServerClient } from '@/lib/supabase-server'
 import { Progress } from '@/components/ui/progress'
+import { AIInsights } from '@/components/ai-insights'
 
 export default async function StaffDashboard() {
     // Check authentication and authorization
@@ -182,9 +183,15 @@ export default async function StaffDashboard() {
             </div>
 
             <Tabs defaultValue="menu" className="space-y-4">
-                <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="menu">Menu Management</TabsTrigger>
-                    <TabsTrigger value="analytics">AI Insights</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2 h-auto">
+                    <TabsTrigger value="menu" className="flex items-center gap-2 py-3">
+                        <ChefHat className="h-4 w-4" />
+                        <span className="font-semibold">Menu Management</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="analytics" className="flex items-center gap-2 py-3">
+                        <TrendingUp className="h-4 w-4" />
+                        <span className="font-semibold">AI Insights & Analytics</span>
+                    </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="menu" className="space-y-4">
@@ -202,37 +209,7 @@ export default async function StaffDashboard() {
                 </TabsContent>
 
                 <TabsContent value="analytics">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Daily AI Summary</CardTitle>
-                            <p className="text-sm text-muted-foreground">
-                                AI-powered insights based on student feedback and ratings
-                            </p>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="bg-muted p-4 rounded-lg border">
-                                <h3 className="font-semibold mb-2 flex items-center gap-2">
-                                    ✨ AI Analysis
-                                </h3>
-                                <ul className="list-disc list-inside space-y-2 text-sm">
-                                    <li>Students are loving the <strong>Chicken Biryani</strong> today, but many mentioned it was slightly spicy.</li>
-                                    <li><strong>Cold Coffee</strong> has received multiple complaints about being "too watery". Consider adjusting the milk ratio.</li>
-                                    <li><strong>Veg Thali</strong> sales are steady, but feedback suggests the Dal is cold.</li>
-                                </ul>
-                            </div>
-
-                            <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                                <h3 className="font-semibold mb-2 text-blue-900 dark:text-blue-100">
-                                    💡 Recommendations
-                                </h3>
-                                <ul className="list-disc list-inside space-y-2 text-sm text-blue-800 dark:text-blue-200">
-                                    <li>Increase Chicken Biryani quantity for tomorrow based on high demand</li>
-                                    <li>Review Cold Coffee recipe - consider using less water or more milk</li>
-                                    <li>Ensure Dal is served hot - check heating equipment</li>
-                                </ul>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    <AIInsights />
                 </TabsContent>
             </Tabs>
         </div>

@@ -54,15 +54,13 @@ export function BottomNav() {
                 <span className="text-xs font-medium">Profile</span>
             </Link>
 
-            {role === 'staff' && (
-                <Link
-                    href="/staff"
-                    className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${isActive('/staff') ? 'text-primary' : 'text-muted-foreground hover:text-primary/70'}`}
-                >
-                    <Settings className="w-6 h-6" />
-                    <span className="text-xs font-medium">Staff</span>
-                </Link>
-            )}
+            <Link
+                href="/staff"
+                className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${isActive('/staff') ? 'text-primary' : 'text-muted-foreground hover:text-primary/70'}`}
+            >
+                <Settings className="w-6 h-6" />
+                <span className="text-xs font-medium">Staff</span>
+            </Link>
         </div>
     )
 }

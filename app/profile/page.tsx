@@ -123,7 +123,7 @@ export default function ProfilePage() {
             console.error('Error signing out:', error)
         } finally {
             toast.success('Signed out successfully')
-            router.push('/')
+            // Stay on profile page - it will show the sign-in prompt
             router.refresh()
         }
     }
@@ -202,10 +202,18 @@ export default function ProfilePage() {
                             Please sign in to view your profile and stats
                         </CardDescription>
                     </CardHeader>
-                    <CardContent className="text-center">
+                    <CardContent className="space-y-3">
+                        <Button
+                            onClick={() => router.push('/auth/signin')}
+                            className="w-full bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white font-semibold"
+                            size="lg"
+                        >
+                            Sign In
+                        </Button>
                         <Button
                             onClick={() => router.push('/')}
-                            className="w-full bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700"
+                            variant="outline"
+                            className="w-full"
                         >
                             Go to Home
                         </Button>
