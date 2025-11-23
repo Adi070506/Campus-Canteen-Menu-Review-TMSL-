@@ -20,9 +20,11 @@ export default function ForgotPasswordPage() {
         setLoading(true)
 
         try {
-            const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL
-                ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/update-password`
-                : `${window.location.origin}/auth/update-password`
+            // Use production URL if not on localhost
+            const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+            const redirectUrl = isLocalhost
+                ? 'http://localhost:3000/auth/update-password'
+                : 'https://canteen-pulse.vercel.app/auth/update-password'
 
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
                 redirectTo: redirectUrl,

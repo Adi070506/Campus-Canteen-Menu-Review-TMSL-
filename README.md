@@ -24,7 +24,7 @@ Canteen Pulse is a revolutionary campus dining platform that transforms how stud
 
 ## 🚀 Live Demo
 
-**[Try Canteen Pulse Now!](#)** *(https://canteen-pulse.vercel.app)*
+**[Try Canteen Pulse Now!](https://canteen-pulse.vercel.app)** 🎉
 
 ## 🛠️ Tech Stack
 
