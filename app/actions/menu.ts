@@ -41,3 +41,22 @@ export async function getLocations() {
     const { data } = await supabase.from('locations').select('*')
     return data || []
 }
+
+export async function getAllMenuItems() {
+    const today = new Date().toISOString().split('T')[0]
+
+    const { data: items } = await supabase
+        .from('daily_menu_items')
+        .select(`
+            *,
+            dish:dishes(*),
+            daily_menu:daily_menus!inner(
+                id,
+                date,
+                location:locations(name)
+            )
+        `)
+        .eq('daily_menu.date', today)
+
+    return items || []
+}

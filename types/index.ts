@@ -9,6 +9,7 @@ export interface Dish {
     price: number
     category?: string
     image_url?: string
+    is_veg?: boolean
     created_at: string
 }
 

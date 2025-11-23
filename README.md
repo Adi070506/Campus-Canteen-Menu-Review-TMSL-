@@ -1,136 +1,234 @@
-# Canteen Pulse - TMSL Edition
+# 🍽️ Canteen Pulse
 
-A modern web platform for Techno Main Salt Lake (TMSL) and TIU students to check daily canteen menus, rate dishes, and share real-time feedback.
+**The Future of Campus Dining**
 
-## Features
+A modern, real-time campus dining platform that connects students with live menu updates, availability tracking, and community-driven ratings. Built for TMSL & TIU Campus.
 
-- 🍽️ **Daily Menu Display** - View menus from Main Canteen, Food Truck, and Snack Store
-- ⭐ **Dish Ratings & Reviews** - Rate dishes and share feedback with tags
-- 🏆 **Leaderboard** - Gamified system with points and streaks
-- 👨‍🍳 **Staff Portal** - Manage availability and view analytics
-- 🎨 **Modern UI** - Beautiful, animated interface with Framer Motion
-- 🔐 **Authentication** - Secure login for students and staff
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)
+![Supabase](https://img.shields.io/badge/Supabase-Backend-green?style=flat-square&logo=supabase)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38bdf8?style=flat-square&logo=tailwind-css)
 
-## Tech Stack
+## ✨ Features
 
-- **Frontend**: Next.js 16 (App Router), TypeScript, Tailwind CSS v4
-- **UI Components**: shadcn/ui, Framer Motion
-- **Backend**: Supabase (PostgreSQL, Authentication, RLS)
-- **Deployment**: Vercel
+### 🎯 Core Features
+- **Real-Time Menu Updates** - Live menu availability across 4 campus locations
+- **Student Ratings & Reviews** - Community-driven feedback with 5-star ratings
+- **Battle Cards** - Showcase most loved and needs-attention dishes
+- **Leaderboard** - Gamified system rewarding active reviewers
+- **Staff Dashboard** - Comprehensive analytics and inventory management
+- **Dark/Light Mode** - Premium theme with smooth transitions (defaults to dark)
 
-## Getting Started
+### 🏢 Multi-Location Support
+- **Main Canteen** - Breakfast & lunch items (veg & non-veg)
+- **Food Truck** - Quick bites and street food
+- **Snack Store** - Snacks and light refreshments
+- **Juice Bar** - Fresh juices, shakes, and beverages
+
+### 🎨 Premium UI/UX
+- **Modern Gradient Design** - Blue → Purple → Pink color scheme
+- **Smooth Animations** - Framer Motion powered transitions
+- **Responsive Layout** - Optimized for mobile, tablet, and desktop
+- **Glass Morphism** - Premium visual effects and shadows
+- **Battle Cards** - Animated dish highlights with hover effects
+
+### 📊 Analytics & Insights
+- **Real-Time Statistics** - Total ratings, feedback trends, wastage tracking
+- **Top/Bottom Dishes** - Data-driven insights on popular items
+- **Availability Tracking** - Live stock status and updates
+- **Rating Distribution** - Visual analytics for staff
+
+## 🚀 Tech Stack
+
+### Frontend
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS v4** - Utility-first styling
+- **Framer Motion** - Smooth animations
+- **shadcn/ui** - Premium component library
+- **Lucide Icons** - Beautiful icon set
+
+### Backend
+- **Supabase** - PostgreSQL database, authentication, and real-time subscriptions
+- **Row Level Security (RLS)** - Secure data access policies
+- **Server Actions** - Type-safe server-side operations
+
+### Authentication
+- **Email/Password** - Supabase Auth
+- **Role-Based Access** - Student and Staff roles
+- **Protected Routes** - Secure dashboard access
+
+## 📦 Installation
 
 ### Prerequisites
-
-- Node.js 18+ installed
+- Node.js 18+ and npm
 - Supabase account
+- Git
 
-### Installation
+### Setup
 
-1. Clone the repository:
+1. **Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/Campus-Canteen-Menu-Review.git
-cd Campus-Canteen-Menu-Review
+git clone <your-repo-url>
+cd canteen-pulse
 ```
 
-2. Install dependencies:
+2. **Install dependencies**
 ```bash
 npm install
 ```
 
-3. Set up environment variables:
+3. **Environment Variables**
+
 Create a `.env.local` file in the root directory:
+
 ```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-4. Set up the database:
-- Go to your Supabase project dashboard
-- Navigate to SQL Editor
-- Run the SQL scripts in order:
-  1. `supabase/schema-remaining.sql` (creates tables)
-  2. `supabase/seed.sql` (populates sample data)
+4. **Database Setup**
 
-5. Configure Supabase Authentication:
-- Go to Authentication → Providers → Email
-- Disable "Confirm email" for development
-- Save changes
+Run the SQL files in order:
+```bash
+# In your Supabase SQL Editor:
+1. supabase/schema.sql
+2. supabase/rls_policies.sql
+3. supabase/seed.sql
+```
 
-6. Run the development server:
+5. **Run Development Server**
 ```bash
 npm run dev
 ```
 
-7. Open [http://localhost:3000](http://localhost:3000) in your browser
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-## Project Structure
+## 🗂️ Project Structure
 
 ```
 canteen-pulse/
-├── app/                    # Next.js app router pages
-│   ├── actions/           # Server actions
-│   ├── dish/[id]/         # Dish detail page
-│   ├── leaderboard/       # Leaderboard page
-│   ├── staff/             # Staff portal
-│   └── page.tsx           # Home page
-├── components/            # React components
+├── app/
+│   ├── actions/          # Server actions
+│   │   ├── analytics.ts  # Analytics data fetching
+│   │   ├── auth.ts       # Authentication
+│   │   ├── menu.ts       # Menu operations
+│   │   └── staff.ts      # Staff operations
+│   ├── leaderboard/      # Leaderboard page
+│   ├── profile/          # User profile page
+│   ├── staff/            # Staff dashboard
+│   ├── globals.css       # Global styles & theme
+│   ├── layout.tsx        # Root layout
+│   └── page.tsx          # Home page
+├── components/
 │   ├── ui/               # shadcn/ui components
-│   ├── hero-section.tsx  # Hero component
+│   ├── battle-cards.tsx  # Top/bottom dish cards
+│   ├── hero-client.tsx   # Hero section
 │   ├── menu-section.tsx  # Menu display
-│   └── ...
-├── lib/                   # Utility functions
-│   ├── supabase.ts       # Supabase client
-│   └── auth-helpers.ts   # Authentication helpers
-├── supabase/             # Database scripts
-│   ├── schema-remaining.sql
-│   └── seed.sql
-└── types/                # TypeScript types
-
+│   ├── rating-form.tsx   # Rating submission
+│   ├── theme-provider.tsx # Dark mode context
+│   └── theme-toggle.tsx  # Theme switcher
+├── lib/
+│   ├── supabase.ts       # Client-side Supabase
+│   └── supabase-server.ts # Server-side Supabase
+├── supabase/
+│   ├── schema.sql        # Database schema
+│   ├── rls_policies.sql  # Security policies
+│   └── seed.sql          # Sample data
+└── public/               # Static assets
 ```
 
-## Database Schema
+## 🎯 Key Features Explained
 
-- **profiles** - User profiles (students and staff)
-- **locations** - Canteen locations
-- **dishes** - Global dish catalog
-- **daily_menus** - Daily menus per location
-- **daily_menu_items** - Available dishes with status
-- **ratings** - User ratings and feedback
+### Battle Cards
+Displays the most loved and needs-attention dishes based on real student ratings:
+- **Crowd Favourite** - Green gradient, trophy icon, trending indicator
+- **Needs Attention** - Orange/red gradient, alert icon, improvement focus
+- Smooth hover animations with lift and shadow effects
 
-## Features in Detail
+### Staff Dashboard
+Comprehensive analytics and management:
+- **Key Metrics** - Total ratings, positive feedback, alerts, wastage
+- **Inventory Overview** - Top dishes, availability rates, stock status
+- **Real-Time Updates** - Live menu item management
+- **4-Column Grid Layout** - Optimized for data visualization
 
-### Student Portal
-- View daily menus across all locations
-- Rate dishes with 1-5 stars
-- Add tags and comments to ratings
-- Track personal streak and points
-- View leaderboard rankings
+### Dark Mode
+Premium theme implementation:
+- Defaults to dark mode
+- Smooth transitions (200ms cubic-bezier)
+- Theme-aware colors throughout
+- Persistent across navigation
 
-### Staff Portal
-- Update dish availability status
-- View analytics and insights
-- Manage daily menus
+### Responsive Design
+- Mobile-first approach
+- Breakpoints: sm (640px), md (768px), lg (1024px)
+- Touch-optimized interactions
+- Adaptive layouts for all screen sizes
 
-## Deployment
+## 🔐 Security
 
-The app is ready to deploy on Vercel:
+- **Row Level Security (RLS)** - Database-level access control
+- **Authentication Required** - Protected routes and actions
+- **Role-Based Permissions** - Staff vs Student access levels
+- **Server-Side Validation** - All mutations validated on server
 
-```bash
-npm run build
-```
+## 🎨 Design System
 
-Then connect your GitHub repository to Vercel and deploy.
+### Color Palette
+- **Primary Gradient**: Blue (#2563EB) → Purple (#9333EA) → Pink (#EC4899)
+- **Success**: Green (#10B981)
+- **Warning**: Orange (#F59E0B)
+- **Error**: Red (#EF4444)
 
-## Contributing
+### Typography
+- **Headings**: Outfit (Google Fonts)
+- **Body**: Inter (Google Fonts)
+- **Weights**: 400 (regular), 600 (semibold), 700 (bold), 900 (black)
 
-This is a hackathon project for TMSL/TIU. Contributions are welcome!
+### Animations
+- **Duration**: 200ms (transitions), 300-500ms (interactions)
+- **Easing**: cubic-bezier(0.4, 0, 0.2, 1)
+- **Custom**: shimmer, float, glow effects
 
-## License
+## 📱 Pages
 
-MIT
+### Home (`/`)
+- Hero section with gradient background
+- Battle Cards (top/bottom dishes)
+- Live menu with availability status
+- Location-based filtering
 
-## Acknowledgments
+### Profile (`/profile`)
+- User statistics (ratings, points, streak)
+- Recent activity feed
+- Edit profile functionality
+- Sign out option
 
-- Built for IIC Hackathon
-- Designed for TMSL & TIU campus community
+### Leaderboard (`/leaderboard`)
+- Top 3 podium display
+- Rising stars grid (2-column)
+- Points and streak tracking
+- Animated entry effects
+
+### Staff Dashboard (`/staff`)
+- Real-time analytics
+- Menu item management
+- Availability updates
+- Inventory overview
+
+## 🤝 Contributing
+
+This project was built for the IIC Hackathon. Contributions, issues, and feature requests are welcome!
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+## 👥 Team
+
+Built with ❤️ for campus dining excellence.
+
+---
+
+**Canteen Pulse** - Your Voice, Our Menu 🎯

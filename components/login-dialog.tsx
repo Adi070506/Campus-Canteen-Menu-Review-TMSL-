@@ -1,13 +1,17 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { signIn, signUp } from '@/lib/auth-helpers'
+import { supabase } from '@/lib/supabase'
+import { signUp } from '@/lib/auth-helpers'
 import { toast } from 'sonner'
+
+import React from 'react'
 
 interface LoginDialogProps {
     open: boolean
@@ -23,19 +27,36 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
         fullName: '',
         role: 'student' as 'student' | 'staff',
     })
+    const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
-
         try {
             if (mode === 'login') {
-                const result = await signIn(formData.email, formData.password)
-                if (result.success) {
-                    toast.success('Logged in successfully!')
-                    onOpenChange(false)
+                const { error } = await supabase.auth.signInWithPassword({
+                    email: formData.email,
+                    password: formData.password,
+                })
+                if (error) {
+                    toast.error(error.message || 'Login failed')
                 } else {
-                    toast.error(result.error || 'Login failed')
+                    toast.success('Logged in successfully!')
+                    const { data: { session } } = await supabase.auth.getSession()
+                    if (session?.user) {
+                        const { data: profile } = await supabase
+                            .from('profiles')
+                            .select('role')
+                            .eq('id', session.user.id)
+                            .maybeSingle()
+                        const role = profile?.role
+                        if (role === 'staff') {
+                            router.push('/staff')
+                        } else {
+                            router.push('/')
+                        }
+                    }
+                    onOpenChange(false)
                 }
             } else {
                 const result = await signUp(formData.email, formData.password, formData.fullName, formData.role)
@@ -47,8 +68,8 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
                     toast.error(result.error || 'Signup failed')
                 }
             }
-        } catch (error) {
-            console.error('Form submission error:', error)
+        } catch (err) {
+            console.error('Form submission error:', err)
             toast.error('An unexpected error occurred')
         } finally {
             setLoading(false)
@@ -66,7 +87,6 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
                             : 'Join Canteen Pulse to start rating and reviewing'}
                     </DialogDescription>
                 </DialogHeader>
-
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {mode === 'signup' && (
                         <>
@@ -79,10 +99,12 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
                                     required
                                 />
                             </div>
-
                             <div className="space-y-2">
                                 <Label htmlFor="role">I am a</Label>
-                                <Select value={formData.role} onValueChange={(value: 'student' | 'staff') => setFormData({ ...formData, role: value })}>
+                                <Select
+                                    value={formData.role}
+                                    onValueChange={(value: 'student' | 'staff') => setFormData({ ...formData, role: value })}
+                                >
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
@@ -94,7 +116,6 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
                             </div>
                         </>
                     )}
-
                     <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
                         <Input
@@ -105,7 +126,6 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
                             required
                         />
                     </div>
-
                     <div className="space-y-2">
                         <Label htmlFor="password">Password</Label>
                         <Input
@@ -117,11 +137,9 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
                             minLength={6}
                         />
                     </div>
-
                     <Button type="submit" className="w-full" disabled={loading}>
                         {loading ? 'Please wait...' : mode === 'login' ? 'Sign In' : 'Create Account'}
                     </Button>
-
                     <div className="text-center text-sm">
                         {mode === 'login' ? (
                             <p>

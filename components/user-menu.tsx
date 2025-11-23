@@ -10,8 +10,10 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { signOut } from '@/lib/auth-helpers'
+import { supabase } from '@/lib/supabase'
 import { LogOut, User } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 interface UserMenuProps {
     user: {
@@ -24,11 +26,19 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ user }: UserMenuProps) {
+    const router = useRouter()
     const initials = user.profile?.full_name
         ?.split(' ')
         .map(n => n[0])
         .join('')
         .toUpperCase() || user.email[0].toUpperCase()
+
+    const handleSignOut = async () => {
+        await supabase.auth.signOut()
+        toast.success('Signed out successfully')
+        router.push('/')
+        router.refresh()
+    }
 
     return (
         <DropdownMenu>
@@ -54,13 +64,9 @@ export function UserMenu({ user }: UserMenuProps) {
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                    <form action={signOut}>
-                        <button type="submit" className="flex w-full items-center">
-                            <LogOut className="mr-2 h-4 w-4" />
-                            <span>Sign out</span>
-                        </button>
-                    </form>
+                <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sign out</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

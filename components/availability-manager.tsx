@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { DailyMenuItem } from '@/types'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
@@ -16,18 +16,31 @@ interface AvailabilityManagerProps {
 export function AvailabilityManager({ initialItems }: AvailabilityManagerProps) {
     const [items, setItems] = useState(initialItems)
 
+    // Sync state when initialItems change (e.g., after navigation)
+    useEffect(() => {
+        setItems(initialItems)
+    }, [initialItems])
+
     const handleStatusChange = async (itemId: string, newStatus: string) => {
+        const typedStatus = newStatus as 'Available' | 'Low' | 'Out of Stock'
+
         // Optimistic update
         setItems(items.map(item =>
-            item.id === itemId ? { ...item, status: newStatus as any } : item
+            item.id === itemId ? { ...item, status: typedStatus } : item
         ))
 
         try {
-            await updateItemStatus(itemId, newStatus)
-            toast.success('Status updated')
+            const result = await updateItemStatus(itemId, typedStatus)
+            if (result.success) {
+                toast.success('Status updated successfully')
+            } else {
+                toast.error(result.error || 'Failed to update status')
+                // Revert on error
+                setItems(initialItems)
+            }
         } catch (error) {
             toast.error('Failed to update status')
-            // Revert
+            // Revert on error
             setItems(initialItems)
         }
     }
@@ -53,7 +66,7 @@ export function AvailabilityManager({ initialItems }: AvailabilityManagerProps) 
 
                     <div className="flex items-center gap-2">
                         <Select
-                            defaultValue={item.status}
+                            value={item.status}
                             onValueChange={(val) => handleStatusChange(item.id, val)}
                         >
                             <SelectTrigger className="w-[140px]">

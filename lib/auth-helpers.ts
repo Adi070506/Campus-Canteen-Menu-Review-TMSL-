@@ -57,7 +57,18 @@ export async function signUp(email: string, password: string, fullName: string, 
 }
 
 export async function signIn(email: string, password: string) {
-    const supabase = createClient()
+    // Import the browser client directly
+    const { createClient: createSupabaseClient } = await import('@supabase/supabase-js')
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+    const supabase = createSupabaseClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+        },
+    })
 
     const { error } = await supabase.auth.signInWithPassword({
         email,

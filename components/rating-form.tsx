@@ -10,7 +10,13 @@ import { toast } from 'sonner'
 
 const TAGS = ['Too Oily', 'Spicy', 'Cold', 'Fresh', 'Tasty', 'Good Portion', 'Overpriced']
 
-export function RatingForm({ dishId }: { dishId: string }) {
+interface RatingFormProps {
+    dishId: string
+    dishName?: string
+    onSuccess?: () => void
+}
+
+export function RatingForm({ dishId, dishName, onSuccess }: RatingFormProps) {
     const [rating, setRating] = useState(0)
     const [selectedTags, setSelectedTags] = useState<string[]>([])
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -26,14 +32,32 @@ export function RatingForm({ dishId }: { dishId: string }) {
     const handleSubmit = async (formData: FormData) => {
         setIsSubmitting(true)
         try {
-            formData.append('rating', rating.toString())
-            selectedTags.forEach(tag => formData.append('tags', tag))
-            formData.append('dishId', dishId)
+            const comment = formData.get('comment') as string
 
-            await submitRating(formData)
+            const result = await submitRating(
+                dishId,
+                rating,
+                selectedTags,
+                comment
+            )
+
+            if (!result.success) {
+                throw new Error(result.error)
+            }
+
             toast.success('Rating submitted successfully!')
-        } catch (error) {
-            toast.error('Failed to submit rating. Please try again.')
+
+            // Reset form
+            setRating(0)
+            setSelectedTags([])
+
+            // Call success callback
+            if (onSuccess) {
+                onSuccess()
+            }
+        } catch (error: any) {
+            console.error('Rating submission error:', error)
+            toast.error(error.message || 'Failed to submit rating. Please try again.')
         } finally {
             setIsSubmitting(false)
         }
@@ -66,8 +90,8 @@ export function RatingForm({ dishId }: { dishId: string }) {
                             type="button"
                             onClick={() => toggleTag(tag)}
                             className={`px-3 py-1 rounded-full text-sm border transition-colors ${selectedTags.includes(tag)
-                                    ? 'bg-primary text-primary-foreground border-primary'
-                                    : 'bg-background hover:bg-muted'
+                                ? 'bg-primary text-primary-foreground border-primary'
+                                : 'bg-background hover:bg-muted'
                                 }`}
                         >
                             {tag}
