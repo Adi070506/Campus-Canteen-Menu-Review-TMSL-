@@ -5,12 +5,36 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Star, ArrowRight } from 'lucide-react'
 import { DailyMenuItem } from '@/types'
-import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 
 interface DishCardProps {
     item: DailyMenuItem
+}
+
+// Function to get initials from dish name
+const getInitials = (name: string): string => {
+    const words = name.split(' ')
+    if (words.length === 1) {
+        return name.substring(0, 2).toUpperCase()
+    }
+    return words.slice(0, 2).map(word => word[0]).join('').toUpperCase()
+}
+
+// Function to get color based on dish name
+const getColorFromName = (name: string): string => {
+    const colors = [
+        'from-orange-400 to-red-500',
+        'from-purple-400 to-pink-500',
+        'from-blue-400 to-cyan-500',
+        'from-green-400 to-emerald-500',
+        'from-yellow-400 to-orange-500',
+        'from-rose-400 to-pink-500',
+        'from-indigo-400 to-purple-500',
+        'from-teal-400 to-green-500',
+    ]
+    const index = name.charCodeAt(0) % colors.length
+    return colors[index]
 }
 
 export function DishCard({ item }: DishCardProps) {
@@ -50,6 +74,8 @@ export function DishCard({ item }: DishCardProps) {
     }
 
     const statusConfig = getStatusConfig(status)
+    const initials = getInitials(dish.name)
+    const gradientColor = getColorFromName(dish.name)
 
     return (
         <motion.div
@@ -57,14 +83,17 @@ export function DishCard({ item }: DishCardProps) {
             transition={{ type: 'spring', stiffness: 300 }}
         >
             <Card className="overflow-hidden border shadow-premium hover:shadow-xl transition-all duration-300 bg-card h-full flex flex-col rounded-xl p-0">
-                <div className="relative h-48 w-full overflow-hidden">
-                    <Image
-                        src={dish.image_url || '/placeholder-food.jpg'}
-                        alt={dish.name}
-                        fill
-                        className="object-cover hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60" />
+                <div className={`relative h-48 w-full overflow-hidden bg-gradient-to-br ${gradientColor}`}>
+                    {/* Initials Display */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-7xl font-black text-white drop-shadow-2xl">
+                            {initials}
+                        </span>
+                    </div>
+
+                    {/* Decorative pattern overlay */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.2),transparent_50%)]" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
 
                     <Badge className={`absolute top-3 right-3 ${statusConfig.color} text-white border-none px-3 py-1 shadow-sm backdrop-blur-md`}>
                         {statusConfig.text}
